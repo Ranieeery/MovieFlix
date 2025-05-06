@@ -1,6 +1,9 @@
 package dev.raniery.movieflix.controller;
 
+import dev.raniery.movieflix.controller.request.CategoryRequest;
+import dev.raniery.movieflix.controller.response.CategoryResponse;
 import dev.raniery.movieflix.entity.Category;
+import dev.raniery.movieflix.mapper.CategoryMapper;
 import dev.raniery.movieflix.service.CategoryService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -15,18 +18,28 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public List<Category> getAllCategories() {
-        return categoryService.findAll();
+    public List<CategoryResponse> getAllCategories() {
+        List<Category> categories = categoryService.findAll();
+        return categories
+            .stream()
+            .map(CategoryMapper::toCategoryResponse)
+            .toList();
     }
 
     @PostMapping
-    public Category saveCategory(@RequestBody Category category) {
-        return categoryService.saveCategory(category);
+    public CategoryResponse saveCategory(@RequestBody CategoryRequest request) {
+        Category category = CategoryMapper.toCategory(request);
+        Category sadevCategory = categoryService.saveCategory(category);
+
+        return CategoryMapper.toCategoryResponse(sadevCategory);
     }
 
     @GetMapping("/{id}")
-    public Category getByCategoryId(@PathVariable Long id) {
-        return categoryService.findById(id).orElse(null);
+    public CategoryResponse getByCategoryId(@PathVariable Long id) {
+        return categoryService
+            .findById(id)
+            .map(CategoryMapper::toCategoryResponse)
+            .orElse(null);
     }
 
     @DeleteMapping("/{id}")
