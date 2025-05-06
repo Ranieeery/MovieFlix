@@ -21,7 +21,7 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public ResponseEntity<List<CategoryResponse>> getAllCategories() {
+    public ResponseEntity<List<CategoryResponse>> getAll() {
         List<CategoryResponse> categories = categoryService
             .findAll()
             .stream()
@@ -32,8 +32,8 @@ public class CategoryController {
     }
 
     @PostMapping
-    public ResponseEntity<CategoryResponse> saveCategory(@RequestBody CategoryRequest request) {
-        Category savedCategory = categoryService.saveCategory(CategoryMapper.toCategory(request));
+    public ResponseEntity<CategoryResponse> save(@RequestBody CategoryRequest request) {
+        Category savedCategory = categoryService.save(CategoryMapper.toCategory(request));
 
         return ResponseEntity
             .created(URI.create("/movieflix/category/" + savedCategory.getId()))
@@ -41,19 +41,27 @@ public class CategoryController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<CategoryResponse> getByCategoryId(@PathVariable Long id) {
+    public ResponseEntity<CategoryResponse> getById(@PathVariable Long id) {
         return categoryService
             .findById(id)
             .map(c -> ResponseEntity.ok(CategoryMapper.toCategoryResponse(c)))
             .orElse(ResponseEntity.notFound().build());
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<CategoryResponse> update(@PathVariable Long id, @RequestBody CategoryRequest request) {
+
+        return categoryService.update(id, CategoryMapper.toCategory(request))
+            .map(c -> ResponseEntity.ok(CategoryMapper.toCategoryResponse(c)))
+            .orElse(ResponseEntity.notFound().build());
+    }
+
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteByCategoryId(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteById(@PathVariable Long id) {
         Optional<Category> optionalCategory = categoryService.findById(id);
 
         if (optionalCategory.isPresent()) {
-            categoryService.deleteCategory(id);
+            categoryService.delete(id);
             return ResponseEntity.noContent().build();
         }
 

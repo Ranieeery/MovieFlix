@@ -8,23 +8,33 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
-//TODO: Update method with PATCH/PUT
 @Service
 @RequiredArgsConstructor
 public class StreamingService {
 
     private final StreamingRepository repository;
 
-    public List<Streaming> findAll() {
-        return repository.findAll();
-    }
-
     public Streaming save(Streaming streaming) {
         return repository.save(streaming);
     }
 
+    public List<Streaming> findAll() {
+        return repository.findAllByOrderByIdAsc();
+    }
+
     public Optional<Streaming> findById(Long id) {
         return repository.findById(id);
+    }
+
+    public Optional<Streaming> update(Long id, Streaming streaming) {
+        Optional<Streaming> optional = repository.findById(id);
+
+        optional.ifPresent(c -> {
+            c.setTitle(streaming.getTitle());
+            repository.save(c);
+        });
+
+        return optional;
     }
 
     public void delete(Long id) {
