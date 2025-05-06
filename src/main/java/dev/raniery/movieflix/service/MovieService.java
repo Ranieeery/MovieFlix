@@ -14,12 +14,12 @@ public class MovieService {
 
     private final MovieRepository repository;
 
-    public List<Movie> findAll() {
-        return repository.findAll();
+    public Movie save(Movie movie) {
+        return repository.save(movie);
     }
 
-    public Movie save(Movie streaming) {
-        return repository.save(streaming);
+    public List<Movie> findAll() {
+        return repository.findAll();
     }
 
     public Optional<Movie> findById(Long id) {

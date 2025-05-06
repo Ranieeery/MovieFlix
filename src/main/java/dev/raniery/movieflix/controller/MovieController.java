@@ -32,9 +32,7 @@ public class MovieController {
 
     @PostMapping
     public ResponseEntity<MovieResponse> save(@RequestBody MovieRequest request) {
-        Movie movie = MovieMapper.toMovie(request);
-        Movie savedMovie = movieService.save(movie);
-
+        Movie savedMovie = movieService.save(MovieMapper.toMovie(request));
 
         return ResponseEntity
             .created(URI.create("/movieflix/movies/" + savedMovie.getId()))
