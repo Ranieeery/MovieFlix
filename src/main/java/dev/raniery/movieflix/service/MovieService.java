@@ -1,7 +1,7 @@
 package dev.raniery.movieflix.service;
 
-import dev.raniery.movieflix.entity.Movie;
 import dev.raniery.movieflix.entity.Category;
+import dev.raniery.movieflix.entity.Movie;
 import dev.raniery.movieflix.entity.Streaming;
 import dev.raniery.movieflix.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
@@ -72,7 +72,7 @@ public class MovieService {
             categoryService.findById(c.getId()).ifPresent(categoriesFound::add);
         });
 
-         return categoriesFound;
+        return categoriesFound;
     }
 
     private List<Streaming> findStreamings(List<Streaming> streamings) {

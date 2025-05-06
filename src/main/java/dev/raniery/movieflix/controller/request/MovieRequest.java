@@ -1,11 +1,10 @@
 package dev.raniery.movieflix.controller.request;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 
 import java.time.LocalDate;
 import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Builder
 public record MovieRequest(

@@ -17,5 +17,5 @@ public record MovieResponse(
 
     Double rating,
     List<CategoryResponse> categories,
-    List<StreamingResponse > streamings) {
+    List<StreamingResponse> streamings) {
 }
