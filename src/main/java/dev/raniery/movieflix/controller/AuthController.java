@@ -5,10 +5,12 @@ import dev.raniery.movieflix.controller.response.UserResponse;
 import dev.raniery.movieflix.entity.Users;
 import dev.raniery.movieflix.mapper.UserMapper;
 import dev.raniery.movieflix.service.UserService;
-import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,12 +24,24 @@ import java.net.URI;
 public class AuthController {
 
     private final UserService userService;
+    private final AuthenticationManager authManager;
 
-    @Transactional
     @PostMapping("/register")
     public ResponseEntity<UserResponse> registerUser(@Valid @RequestBody UserRequest userRequest) {
         Users saved = userService.save(UserMapper.toUser(userRequest));
 
         return ResponseEntity.created(URI.create("/movieflix/user/" + saved.getId())).body(UserMapper.toUserResponse(saved));
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@Valid @RequestBody UserRequest request) {
+        var authToken = new UsernamePasswordAuthenticationToken(request.email(), request.password());
+
+        Authentication authenticate = authManager.authenticate(authToken);
+
+        Users principal = (Users) authenticate.getPrincipal();
+
+        //TODO: retorno token
+        return null;
     }
 }
