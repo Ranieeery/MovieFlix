@@ -1,7 +1,7 @@
 package dev.raniery.movieflix.service;
 
-import dev.raniery.movieflix.entity.Streaming;
-import dev.raniery.movieflix.repository.StreamingRepository;
+import dev.raniery.movieflix.entity.Movie;
+import dev.raniery.movieflix.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -10,19 +10,19 @@ import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class StreamingService {
+public class MovieService {
 
-    private final StreamingRepository repository;
+    private final MovieRepository repository;
 
-    public List<Streaming> findAll() {
+    public List<Movie> findAll() {
         return repository.findAll();
     }
 
-    public Streaming save(Streaming streaming) {
+    public Movie save(Movie streaming) {
         return repository.save(streaming);
     }
 
-    public Optional<Streaming> findById(Long id) {
+    public Optional<Movie> findById(Long id) {
         return repository.findById(id);
     }
 
