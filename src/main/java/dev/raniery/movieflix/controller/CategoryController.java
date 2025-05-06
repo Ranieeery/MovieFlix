@@ -6,8 +6,10 @@ import dev.raniery.movieflix.entity.Category;
 import dev.raniery.movieflix.mapper.CategoryMapper;
 import dev.raniery.movieflix.service.CategoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -18,32 +20,39 @@ public class CategoryController {
     private final CategoryService categoryService;
 
     @GetMapping
-    public List<CategoryResponse> getAllCategories() {
-        List<Category> categories = categoryService.findAll();
-        return categories
+    public ResponseEntity<List<CategoryResponse>> getAllCategories() {
+        List<CategoryResponse> categories = categoryService
+            .findAll()
             .stream()
             .map(CategoryMapper::toCategoryResponse)
             .toList();
+
+        return ResponseEntity.ok(categories);
     }
 
     @PostMapping
-    public CategoryResponse saveCategory(@RequestBody CategoryRequest request) {
+    public ResponseEntity<CategoryResponse> saveCategory(@RequestBody CategoryRequest request) {
         Category category = CategoryMapper.toCategory(request);
         Category sadevCategory = categoryService.saveCategory(category);
 
-        return CategoryMapper.toCategoryResponse(sadevCategory);
+
+        return ResponseEntity
+            .created(URI.create("/movieflix/category/" + sadevCategory.getId()))
+            .body(CategoryMapper.toCategoryResponse(sadevCategory));
     }
 
     @GetMapping("/{id}")
-    public CategoryResponse getByCategoryId(@PathVariable Long id) {
+    public ResponseEntity<CategoryResponse> getByCategoryId(@PathVariable Long id) {
         return categoryService
             .findById(id)
-            .map(CategoryMapper::toCategoryResponse)
-            .orElse(null);
+            .map(c -> ResponseEntity.ok(CategoryMapper.toCategoryResponse(c)))
+            .orElse(ResponseEntity.notFound().build());
     }
 
     @DeleteMapping("/{id}")
-    public void deleteByCategoryId(@PathVariable Long id) {
+    public ResponseEntity<Void> deleteByCategoryId(@PathVariable Long id) {
         categoryService.deleteCategory(id);
+
+        return ResponseEntity.noContent().build();
     }
 }
