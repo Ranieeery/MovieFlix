@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,8 +50,13 @@ public class CategoryController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteByCategoryId(@PathVariable Long id) {
-        categoryService.deleteCategory(id);
+        Optional<Category> optionalCategory = categoryService.findById(id);
 
-        return ResponseEntity.noContent().build();
+        if (optionalCategory.isPresent()) {
+            categoryService.deleteCategory(id);
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }

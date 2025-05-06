@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -56,13 +57,6 @@ public class MovieController {
             .orElse(ResponseEntity.notFound().build());
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteByMovieId(@PathVariable Long id) {
-        movieService.delete(id);
-
-        return ResponseEntity.noContent().build();
-    }
-
     @GetMapping("/search")
     public ResponseEntity<List<MovieResponse>> findByCategory(@RequestParam Long category) {
         List<MovieResponse> list = movieService
@@ -72,5 +66,17 @@ public class MovieController {
             .toList();
 
         return ResponseEntity.ok(list);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteByMovieId(@PathVariable Long id) {
+        Optional<Movie> optionalMovie = movieService.findById(id);
+
+        if (optionalMovie.isPresent()) {
+            movieService.delete(id);
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }

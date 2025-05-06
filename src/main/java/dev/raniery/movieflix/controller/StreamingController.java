@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -49,8 +50,13 @@ public class StreamingController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteByStreamingId(@PathVariable Long id) {
-        streamingService.delete(id);
+        Optional<Streaming> optionalStreaming = streamingService.findById(id);
 
-        return ResponseEntity.noContent().build();
+        if (optionalStreaming.isPresent()) {
+            streamingService.delete(id);
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.notFound().build();
     }
 }
