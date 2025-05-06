@@ -32,9 +32,7 @@ public class CategoryController {
 
     @PostMapping
     public ResponseEntity<CategoryResponse> saveCategory(@RequestBody CategoryRequest request) {
-        Category category = CategoryMapper.toCategory(request);
-        Category savedCategory = categoryService.saveCategory(category);
-
+        Category savedCategory = categoryService.saveCategory(CategoryMapper.toCategory(request));
 
         return ResponseEntity
             .created(URI.create("/movieflix/category/" + savedCategory.getId()))

@@ -32,9 +32,7 @@ public class StreamingController {
 
     @PostMapping
     public ResponseEntity<StreamingResponse> save(@RequestBody StreamingRequest request) {
-        Streaming streaming = StreamingMapper.toStreaming(request);
-        Streaming savedStreaming = streamingService.save(streaming);
-
+        Streaming savedStreaming = streamingService.save(StreamingMapper.toStreaming(request));
 
         return ResponseEntity
             .created(URI.create("/movieflix/streaming/" + savedStreaming.getId()))
