@@ -13,7 +13,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
-    public Users save (Users user) {
+    public Users save(Users user) {
         String password = user.getPassword();
         user.setPassword(passwordEncoder.encode(password));
         return userRepository.save(user);

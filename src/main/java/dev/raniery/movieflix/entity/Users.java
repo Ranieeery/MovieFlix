@@ -9,6 +9,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
+//TODO: Adicionar parametros unique
 @Entity
 @Getter
 @Setter

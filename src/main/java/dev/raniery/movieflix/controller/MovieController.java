@@ -61,7 +61,7 @@ public class MovieController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<MovieResponse> update(@PathVariable Long id,@Valid @RequestBody MovieRequest request) {
+    public ResponseEntity<MovieResponse> update(@PathVariable Long id, @Valid @RequestBody MovieRequest request) {
 
         return movieService
             .update(id, MovieMapper.toMovie(request))
