@@ -1,7 +1,6 @@
 package dev.raniery.movieflix.config;
 
 import dev.raniery.movieflix.exception.EmailAlreadyExistsException;
-import dev.raniery.movieflix.exception.UsernameOrPasswordInvalid;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
