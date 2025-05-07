@@ -12,10 +12,10 @@ import java.util.List;
 public record MovieResponse(
     @Schema(description = "Unique identifier", example = "1")
     Long id,
-    
+
     @Schema(description = "Movie title", example = "The Avengers")
     String title,
-    
+
     @Schema(description = "Movie description", example = "A superhero film based on Marvel Comics")
     String description,
 
@@ -25,10 +25,10 @@ public record MovieResponse(
 
     @Schema(description = "Movie rating on a scale from 0 to 10", example = "8.5")
     Double rating,
-    
+
     @Schema(description = "Categories the movie belongs to")
     List<CategoryResponse> categories,
-    
+
     @Schema(description = "Streaming platforms where the movie is available")
     List<StreamingResponse> streamings) {
 }

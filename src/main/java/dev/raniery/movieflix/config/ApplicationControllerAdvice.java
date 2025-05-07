@@ -18,7 +18,7 @@ public class ApplicationControllerAdvice {
 
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     @ExceptionHandler(BadCredentialsException.class)
-    public String handleNotFoundException(BadCredentialsException e) {
+    public String handleBadCredentialsException(BadCredentialsException e) {
         return e.getMessage();
     }
 
@@ -27,7 +27,7 @@ public class ApplicationControllerAdvice {
     public String handleEmailAlreadyExistsException(EmailAlreadyExistsException e) {
         return e.getMessage();
     }
-    
+
     @ResponseStatus(HttpStatus.NOT_FOUND)
     @ExceptionHandler(ResourceNotFoundException.class)
     public String handleResourceNotFoundException(ResourceNotFoundException e) {
@@ -37,6 +37,7 @@ public class ApplicationControllerAdvice {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Map<String, String> handleArgumentNotValidException(MethodArgumentNotValidException e) {
+
         Map<String, String> errors = new HashMap<>();
 
         e.getBindingResult().getAllErrors().forEach((error) -> {
@@ -44,5 +45,11 @@ public class ApplicationControllerAdvice {
         });
 
         return errors;
+    }
+
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    @ExceptionHandler(Exception.class)
+    public String handleGenericException(Exception e) {
+        return "Ocorreu um erro interno. Por favor, tente novamente mais tarde.";
     }
 }

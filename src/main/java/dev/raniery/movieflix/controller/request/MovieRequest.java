@@ -12,7 +12,7 @@ import java.util.List;
 public record MovieRequest(
     @NotBlank(message = "Movie title can't be blank or null")
     String title,
-    
+
     String description,
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
@@ -21,10 +21,10 @@ public record MovieRequest(
     // @DecimalMin(value = "0.0", message = "Rating must be between 0 and 10")
     // @DecimalMax(value = "10.0", message = "Rating must be between 0 and 10")
     Double rating,
-    
+
     @NotEmpty(message = "At least one category must be provided")
     List<Long> categories,
-    
+
     @NotEmpty(message = "At least one streaming platform must be provided")
     List<Long> streamings) {
 }

@@ -8,7 +8,7 @@ import lombok.Builder;
 public record CategoryResponse(
     @Schema(description = "Unique identifier", example = "1")
     Long id,
-    
+
     @Schema(description = "Category name", example = "Action")
     String name) {
 }

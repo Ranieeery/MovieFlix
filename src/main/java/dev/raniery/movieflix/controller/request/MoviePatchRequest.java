@@ -13,7 +13,7 @@ import java.util.Optional;
 public record MoviePatchRequest(
     @Schema(description = "Movie title", example = "The Godfather")
     Optional<String> title,
-    
+
     @Schema(description = "Movie description", example = "The aging patriarch of an organized crime dynasty transfers control to his son")
     Optional<String> description,
 
@@ -23,10 +23,10 @@ public record MoviePatchRequest(
 
     @Schema(description = "Movie rating (0-10)", example = "9.2")
     Optional<Double> rating,
-    
+
     @Schema(description = "List of category IDs", example = "[1, 2]")
     Optional<List<Long>> categories,
-    
+
     @Schema(description = "List of streaming platform IDs", example = "[1, 3]")
     Optional<List<Long>> streamings) {
 }

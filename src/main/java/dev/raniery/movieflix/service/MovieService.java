@@ -3,8 +3,8 @@ package dev.raniery.movieflix.service;
 import dev.raniery.movieflix.entity.Category;
 import dev.raniery.movieflix.entity.Movie;
 import dev.raniery.movieflix.entity.Streaming;
-import dev.raniery.movieflix.repository.MovieRepository;
 import dev.raniery.movieflix.exception.ResourceNotFoundException;
+import dev.raniery.movieflix.repository.MovieRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +19,6 @@ public class MovieService {
     private final MovieRepository repository;
     private final CategoryService categoryService;
     private final StreamingService streamingService;
-    private final MovieRepository movieRepository;
 
     public Movie save(Movie movie) {
         movie.setCategories(this.findCategories(movie.getCategories()));
@@ -40,7 +39,7 @@ public class MovieService {
     }
 
     public Optional<Movie> update(Long id, Movie movie) {
-        Optional<Movie> optional = movieRepository.findById(id);
+        Optional<Movie> optional = repository.findById(id);
 
 //        optional.ifPresent(c -> {
 //            List<Category> categories = this.findCategories(movie.getCategories());
@@ -70,25 +69,25 @@ public class MovieService {
             if (movie.getDescription() != null) {
                 m.setDescription(movie.getDescription());
             }
-            
+
             if (movie.getReleaseDate() != null) {
                 m.setReleaseDate(movie.getReleaseDate());
             }
-            
+
             if (movie.getRating() != null) {
                 m.setRating(movie.getRating());
             }
-            
+
             if (!categories.isEmpty()) {
                 m.getCategories().clear();
                 m.setCategories(categories);
             }
-            
+
             if (!streamings.isEmpty()) {
                 m.getStreamings().clear();
                 m.setStreamings(streamings);
             }
-            
+
             return repository.save(m);
         });
 
@@ -122,7 +121,7 @@ public class MovieService {
     }
 
     private List<Streaming> findStreamings(List<Streaming> streamings) {
-        
+
         List<Streaming> streamingsFound = new ArrayList<>();
         List<Long> notFoundIds = new ArrayList<>();
 

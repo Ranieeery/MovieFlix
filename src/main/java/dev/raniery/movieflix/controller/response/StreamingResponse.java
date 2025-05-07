@@ -8,7 +8,7 @@ import lombok.Builder;
 public record StreamingResponse(
     @Schema(description = "Unique identifier", example = "1")
     Long id,
-    
+
     @Schema(description = "Streaming platform name", example = "Netflix")
     String title) {
 }

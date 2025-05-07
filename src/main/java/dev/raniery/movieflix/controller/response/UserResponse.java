@@ -10,10 +10,10 @@ import java.util.UUID;
 public record UserResponse(
     @Schema(description = "Unique user identifier")
     UUID id,
-    
+
     @Schema(description = "User's name", example = "Jack Black")
     String name,
-    
+
     @Schema(description = "User's email address", example = "jblack@example.com")
     String email) {
 }
