@@ -32,7 +32,8 @@ public class CategoryController {
     @GetMapping
     @Operation(
         summary = "List all categories",
-        description = "Retrieves a list of all movie categories available in the system"
+        description = "Retrieves a list of all movie categories available in the system",
+        security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponse(
         responseCode = "200",
@@ -78,7 +79,8 @@ public class CategoryController {
     @GetMapping("/{id}")
     @Operation(
         summary = "Get category by ID",
-        description = "Retrieves a specific movie category by its ID"
+        description = "Retrieves a specific movie category by its ID",
+        security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponses(value = {
         @ApiResponse(

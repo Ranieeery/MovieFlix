@@ -29,26 +29,6 @@ public class StreamingController {
 
     private final StreamingService streamingService;
 
-    @GetMapping
-    @Operation(
-        summary = "List all streaming platforms",
-        description = "Retrieves a list of all streaming platforms available in the system"
-    )
-    @ApiResponse(
-        responseCode = "200",
-        description = "Successfully retrieved streaming platforms",
-        content = @Content(schema = @Schema(implementation = StreamingResponse.class))
-    )
-    public ResponseEntity<List<StreamingResponse>> getAll() {
-        List<StreamingResponse> streaming = streamingService
-            .findAll()
-            .stream()
-            .map(StreamingMapper::toStreamingResponse)
-            .toList();
-
-        return ResponseEntity.ok(streaming);
-    }
-
     @PostMapping
     @Operation(
         summary = "Create streaming platform",
@@ -75,10 +55,33 @@ public class StreamingController {
             .body(StreamingMapper.toStreamingResponse(savedStreaming));
     }
 
+    @GetMapping
+    @Operation(
+        summary = "List all streaming platforms",
+        description = "Retrieves a list of all streaming platforms available in the system",
+        security = @SecurityRequirement(name = "bearerAuth")
+        
+    )
+    @ApiResponse(
+        responseCode = "200",
+        description = "Successfully retrieved streaming platforms",
+        content = @Content(schema = @Schema(implementation = StreamingResponse.class))
+    )
+    public ResponseEntity<List<StreamingResponse>> getAll() {
+        List<StreamingResponse> streaming = streamingService
+            .findAll()
+            .stream()
+            .map(StreamingMapper::toStreamingResponse)
+            .toList();
+
+        return ResponseEntity.ok(streaming);
+    }
+
     @GetMapping("/{id}")
     @Operation(
         summary = "Get streaming platform by ID",
-        description = "Retrieves a specific streaming platform by its ID"
+        description = "Retrieves a specific streaming platform by its ID",
+        security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponses(value = {
         @ApiResponse(

@@ -58,7 +58,8 @@ public class MovieController {
     @GetMapping
     @Operation(
         summary = "List all movies",
-        description = "Retrieves a list of all movies available in the system"
+        description = "Retrieves a list of all movies available in the system",
+        security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponse(
         responseCode = "200",
@@ -78,7 +79,8 @@ public class MovieController {
     @GetMapping("/{id}")
     @Operation(
         summary = "Get movie by ID",
-        description = "Retrieves a specific movie by its ID"
+        description = "Retrieves a specific movie by its ID",
+        security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponses(value = {
         @ApiResponse(
@@ -102,7 +104,8 @@ public class MovieController {
     @GetMapping("/search")
     @Operation(
         summary = "Search movies by category",
-        description = "Finds all movies that belong to a specific category"
+        description = "Finds all movies that belong to a specific category",
+        security = @SecurityRequirement(name = "bearerAuth")
     )
     @ApiResponses(value = {
         @ApiResponse(
