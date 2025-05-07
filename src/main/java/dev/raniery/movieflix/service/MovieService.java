@@ -4,6 +4,7 @@ import dev.raniery.movieflix.entity.Category;
 import dev.raniery.movieflix.entity.Movie;
 import dev.raniery.movieflix.entity.Streaming;
 import dev.raniery.movieflix.repository.MovieRepository;
+import dev.raniery.movieflix.exception.ResourceNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -41,21 +42,54 @@ public class MovieService {
     public Optional<Movie> update(Long id, Movie movie) {
         Optional<Movie> optional = movieRepository.findById(id);
 
-        optional.ifPresent(c -> {
+//        optional.ifPresent(c -> {
+//            List<Category> categories = this.findCategories(movie.getCategories());
+//            List<Streaming> streamings = this.findStreamings(movie.getStreamings());
+//
+//            c.setTitle(movie.getTitle());
+//            c.setDescription(movie.getDescription());
+//            c.setReleaseDate(movie.getReleaseDate());
+//            c.setRating(movie.getRating());
+//
+//            c.getCategories().clear();
+//            c.setCategories(categories);
+//            c.getStreamings().clear();
+//            c.setStreamings(streamings);
+//
+//            repository.save(c);
+//        });
+
+        optional.map(m -> {
             List<Category> categories = this.findCategories(movie.getCategories());
             List<Streaming> streamings = this.findStreamings(movie.getStreamings());
 
-            c.setTitle(movie.getTitle());
-            c.setDescription(movie.getDescription());
-            c.setReleaseDate(movie.getReleaseDate());
-            c.setRating(movie.getRating());
+            if (movie.getTitle() != null) {
+                m.setTitle(movie.getTitle());
+            }
 
-            c.getCategories().clear();
-            c.setCategories(categories);
-            c.getStreamings().clear();
-            c.setStreamings(streamings);
-
-            repository.save(c);
+            if (movie.getDescription() != null) {
+                m.setDescription(movie.getDescription());
+            }
+            
+            if (movie.getReleaseDate() != null) {
+                m.setReleaseDate(movie.getReleaseDate());
+            }
+            
+            if (movie.getRating() != null) {
+                m.setRating(movie.getRating());
+            }
+            
+            if (!categories.isEmpty()) {
+                m.getCategories().clear();
+                m.setCategories(categories);
+            }
+            
+            if (!streamings.isEmpty()) {
+                m.getStreamings().clear();
+                m.setStreamings(streamings);
+            }
+            
+            return repository.save(m);
         });
 
         return optional;
@@ -66,21 +100,45 @@ public class MovieService {
     }
 
     private List<Category> findCategories(List<Category> categories) {
+
         List<Category> categoriesFound = new ArrayList<>();
+        List<Long> notFoundIds = new ArrayList<>();
 
         categories.forEach(c -> {
-            categoryService.findById(c.getId()).ifPresent(categoriesFound::add);
+            Optional<Category> category = categoryService.findById(c.getId());
+
+            if (category.isPresent()) {
+                categoriesFound.add(category.get());
+            } else {
+                notFoundIds.add(c.getId());
+            }
         });
+
+        if (!notFoundIds.isEmpty()) {
+            throw ResourceNotFoundException.forCategoryId(notFoundIds.getFirst());
+        }
 
         return categoriesFound;
     }
 
     private List<Streaming> findStreamings(List<Streaming> streamings) {
+        
         List<Streaming> streamingsFound = new ArrayList<>();
+        List<Long> notFoundIds = new ArrayList<>();
 
         streamings.forEach(s -> {
-            streamingService.findById(s.getId()).ifPresent(streamingsFound::add);
+            Optional<Streaming> streaming = streamingService.findById(s.getId());
+
+            if (streaming.isPresent()) {
+                streamingsFound.add(streaming.get());
+            } else {
+                notFoundIds.add(s.getId());
+            }
         });
+
+        if (!notFoundIds.isEmpty()) {
+            throw ResourceNotFoundException.forStreamingId(notFoundIds.getFirst());
+        }
 
         return streamingsFound;
     }

@@ -1,5 +1,6 @@
 package dev.raniery.movieflix.mapper;
 
+import dev.raniery.movieflix.controller.request.MoviePatchRequest;
 import dev.raniery.movieflix.controller.request.MovieRequest;
 import dev.raniery.movieflix.controller.response.CategoryResponse;
 import dev.raniery.movieflix.controller.response.MovieResponse;
@@ -26,8 +27,7 @@ public class MovieMapper {
             .map(c_id -> Streaming.builder().id(c_id).build())
             .toList();
 
-        return Movie
-            .builder()
+        return Movie.builder()
             .title(movieRequest.title())
             .description(movieRequest.description())
             .releaseDate(movieRequest.releaseDate())
@@ -50,8 +50,7 @@ public class MovieMapper {
             .map(StreamingMapper::toStreamingResponse)
             .toList();
 
-        return MovieResponse
-            .builder()
+        return MovieResponse.builder()
             .id(movie.getId())
             .title(movie.getTitle())
             .description(movie.getDescription())
@@ -60,5 +59,36 @@ public class MovieMapper {
             .categories(categories)
             .streamings(streamings)
             .build();
+    }
+
+    public Movie toPartialMovie(MoviePatchRequest moviePatchRequest) {
+        Movie.MovieBuilder builder = Movie.builder();
+
+        moviePatchRequest.title().ifPresent(builder::title);
+        moviePatchRequest.description().ifPresent(builder::description);
+        moviePatchRequest.releaseDate().ifPresent(builder::releaseDate);
+        moviePatchRequest.rating().ifPresent(builder::rating);
+
+        moviePatchRequest.categories().ifPresent(c -> {
+            builder.categories(c
+                .stream()
+                .map(c_id -> Category
+                    .builder()
+                    .id(c_id)
+                    .build())
+                .toList());
+        });
+
+        moviePatchRequest.streamings().ifPresent(s -> {
+            builder.streamings(s
+                .stream()
+                .map(s_id -> Streaming
+                    .builder()
+                    .id(s_id)
+                    .build())
+                .toList());
+        });
+
+        return builder.build();
     }
 }

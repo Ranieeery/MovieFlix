@@ -1,5 +1,6 @@
 package dev.raniery.movieflix.controller;
 
+import dev.raniery.movieflix.controller.request.MoviePatchRequest;
 import dev.raniery.movieflix.controller.request.MovieRequest;
 import dev.raniery.movieflix.controller.response.MovieResponse;
 import dev.raniery.movieflix.entity.Movie;
@@ -147,10 +148,10 @@ public class MovieController {
             content = @Content
         )
     })
-    public ResponseEntity<MovieResponse> update(@PathVariable Long id, @Valid @RequestBody MovieRequest request) {
+    public ResponseEntity<MovieResponse> update(@PathVariable Long id, @Valid @RequestBody MoviePatchRequest request) {
 
         return movieService
-            .update(id, MovieMapper.toMovie(request))
+            .update(id, MovieMapper.toPartialMovie(request))
             .map(c -> ResponseEntity.ok(MovieMapper.toMovieResponse(c)))
             .orElse(ResponseEntity.notFound().build());
     }

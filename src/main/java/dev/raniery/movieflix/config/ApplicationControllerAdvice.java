@@ -1,6 +1,7 @@
 package dev.raniery.movieflix.config;
 
 import dev.raniery.movieflix.exception.EmailAlreadyExistsException;
+import dev.raniery.movieflix.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
@@ -24,6 +25,12 @@ public class ApplicationControllerAdvice {
     @ResponseStatus(HttpStatus.CONFLICT)
     @ExceptionHandler(EmailAlreadyExistsException.class)
     public String handleEmailAlreadyExistsException(EmailAlreadyExistsException e) {
+        return e.getMessage();
+    }
+    
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    @ExceptionHandler(ResourceNotFoundException.class)
+    public String handleResourceNotFoundException(ResourceNotFoundException e) {
         return e.getMessage();
     }
 
