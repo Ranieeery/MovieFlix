@@ -5,6 +5,7 @@ import dev.raniery.movieflix.controller.response.StreamingResponse;
 import dev.raniery.movieflix.entity.Streaming;
 import dev.raniery.movieflix.mapper.StreamingMapper;
 import dev.raniery.movieflix.service.StreamingService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class StreamingController {
     }
 
     @PostMapping
-    public ResponseEntity<StreamingResponse> save(@RequestBody StreamingRequest request) {
+    public ResponseEntity<StreamingResponse> save(@Valid @RequestBody StreamingRequest request) {
         Streaming savedStreaming = streamingService.save(StreamingMapper.toStreaming(request));
 
         return ResponseEntity
@@ -49,7 +50,7 @@ public class StreamingController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StreamingResponse> update(@PathVariable Long id, @RequestBody StreamingRequest request) {
+    public ResponseEntity<StreamingResponse> update(@PathVariable Long id,@Valid @RequestBody StreamingRequest request) {
 
         return streamingService.update(id, StreamingMapper.toStreaming(request))
             .map(c -> ResponseEntity.ok(StreamingMapper.toStreamingResponse(c)))

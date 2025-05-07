@@ -1,4 +1,4 @@
-package dev.raniery.movieflix.service;
+package dev.raniery.movieflix.config;
 
 import dev.raniery.movieflix.repository.UserRepository;
 import lombok.RequiredArgsConstructor;

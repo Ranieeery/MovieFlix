@@ -5,6 +5,7 @@ import dev.raniery.movieflix.controller.response.MovieResponse;
 import dev.raniery.movieflix.entity.Movie;
 import dev.raniery.movieflix.mapper.MovieMapper;
 import dev.raniery.movieflix.service.MovieService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -32,7 +33,7 @@ public class MovieController {
     }
 
     @PostMapping
-    public ResponseEntity<MovieResponse> save(@RequestBody MovieRequest request) {
+    public ResponseEntity<MovieResponse> save(@Valid @RequestBody MovieRequest request) {
         Movie savedMovie = movieService.save(MovieMapper.toMovie(request));
 
         return ResponseEntity
@@ -60,7 +61,7 @@ public class MovieController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<MovieResponse> update(@PathVariable Long id, @RequestBody MovieRequest request) {
+    public ResponseEntity<MovieResponse> update(@PathVariable Long id,@Valid @RequestBody MovieRequest request) {
 
         return movieService
             .update(id, MovieMapper.toMovie(request))
