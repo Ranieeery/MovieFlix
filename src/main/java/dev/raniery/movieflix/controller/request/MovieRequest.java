@@ -1,6 +1,8 @@
 package dev.raniery.movieflix.controller.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.Builder;
@@ -18,8 +20,8 @@ public record MovieRequest(
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     LocalDate releaseDate,
 
-    // @DecimalMin(value = "0.0", message = "Rating must be between 0 and 10")
-    // @DecimalMax(value = "10.0", message = "Rating must be between 0 and 10")
+    @DecimalMin(value = "0.0", message = "Rating must be between 0 and 10")
+    @DecimalMax(value = "100.0", message = "Rating must be between 0 and 10")
     Double rating,
 
     @NotEmpty(message = "At least one category must be provided")

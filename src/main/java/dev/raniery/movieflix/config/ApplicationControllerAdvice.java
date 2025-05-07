@@ -50,6 +50,6 @@ public class ApplicationControllerAdvice {
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public String handleGenericException(Exception e) {
-        return "Ocorreu um erro interno. Por favor, tente novamente mais tarde.";
+        return "An unexpected error occurred: " + e.getMessage();
     }
 }
