@@ -1,7 +1,9 @@
 package dev.raniery.movieflix.config;
 
+import dev.raniery.movieflix.exception.EmailAlreadyExistsException;
 import dev.raniery.movieflix.exception.UsernameOrPasswordInvalid;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -14,9 +16,15 @@ import java.util.Map;
 @RestControllerAdvice
 public class ApplicationControllerAdvice {
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(UsernameOrPasswordInvalid.class)
-    public String handleNotFoundException(UsernameOrPasswordInvalid e) {
+    @ResponseStatus(HttpStatus.UNAUTHORIZED)
+    @ExceptionHandler(BadCredentialsException.class)
+    public String handleNotFoundException(BadCredentialsException e) {
+        return e.getMessage();
+    }
+
+    @ResponseStatus(HttpStatus.CONFLICT)
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public String handleEmailAlreadyExistsException(EmailAlreadyExistsException e) {
         return e.getMessage();
     }
 

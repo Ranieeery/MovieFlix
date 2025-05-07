@@ -9,7 +9,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.UUID;
 
-//TODO: Adicionar parametros unique
 @Entity
 @Getter
 @Setter
@@ -26,7 +25,7 @@ public class Users implements UserDetails {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String email;
 
     @Column(nullable = false)
@@ -39,7 +38,7 @@ public class Users implements UserDetails {
 
     @Override
     public String getUsername() {
-        return "";
+        return this.email;
     }
 
     @Override
